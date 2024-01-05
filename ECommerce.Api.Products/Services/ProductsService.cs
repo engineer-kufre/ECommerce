@@ -2,6 +2,7 @@
 using ECommerce.Api.Products.DataAccess;
 using ECommerce.Api.Products.DTOs;
 using ECommerce.Api.Products.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Api.Products.Services
 {
@@ -37,9 +38,27 @@ namespace ECommerce.Api.Products.Services
             }
         }
 
-        public Task<(bool IsSuccess, IEnumerable<ProductDto> Products, string ErrorMessage)> GetProductsAsync()
+        public async Task<(bool IsSuccess, IEnumerable<ProductDto>? Products, string? ErrorMessage)> GetProductsAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var products = await dbContext.Products.ToListAsync();
+
+                if(products != null && products.Any())
+                {
+                    var result = mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+
+                    return (true, result, null);
+                }
+
+                return (false, null, "Not found");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+
+                return (false, null, ex.Message);
+            }
         }
     }
 }

@@ -28,9 +28,9 @@ namespace ECommerce.Api.Products.Services
                 var products = new List<Product>()
                 {
                     new Product(){Id = 1, Name = "Keyboard", Price = 20, Inventory = 1000},
-                    new Product(){Id = 1, Name = "Mouse", Price = 5, Inventory = 1000},
-                    new Product(){Id = 1, Name = "Monitor", Price = 150, Inventory = 100},
-                    new Product(){Id = 1, Name = "CPU", Price = 200, Inventory = 50}
+                    new Product(){Id = 2, Name = "Mouse", Price = 5, Inventory = 1000},
+                    new Product(){Id = 3, Name = "Monitor", Price = 150, Inventory = 100},
+                    new Product(){Id = 4, Name = "CPU", Price = 200, Inventory = 50}
                 };
 
                 dbContext.Products.AddRange(products);

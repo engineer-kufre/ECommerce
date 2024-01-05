@@ -44,9 +44,32 @@ namespace ECommerce.Api.Products.Services
             {
                 var products = await dbContext.Products.ToListAsync();
 
-                if(products != null && products.Any())
+                if (products != null && products.Any())
                 {
                     var result = mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+
+                    return (true, result, null);
+                }
+
+                return (false, null, "Not found");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, ProductDto? Product, string? ErrorMessage)> GetProductAsync(int id)
+        {
+            try
+            {
+                var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+                if (product != null)
+                {
+                    var result = mapper.Map<Product, ProductDto>(product);
 
                     return (true, result, null);
                 }
